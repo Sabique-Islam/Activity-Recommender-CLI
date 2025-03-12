@@ -16,7 +16,7 @@
 
 ### Instructions for Downloading and Setting Up GloVe Embeddings 
 
-- [🔗 Click here](https://nlp.stanford.edu/data/glove.6B.zip)  to download the GloVe embeddings
+- 🔗[Click here](https://nlp.stanford.edu/data/glove.6B.zip)  to download the GloVe embeddings
 - Extract the ZIP file.  
 - Locate `glove.6B.50d.txt`.  
 - Move `glove.6B.50d.txt` to the `data` folder.  
