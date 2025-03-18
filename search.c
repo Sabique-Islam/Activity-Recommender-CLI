@@ -2,7 +2,7 @@
 Objectives:-
 
 > Take a user prompt (words or sentences).
-> Check it against the database (glove.6B.50d.txt).
+> Check it against the database (glove.6B.300d.txt).
 > Perform cosine similarity search between the user prompt and the database.
 > Returns the top 5 results (in descending order of cosine similarity).
 

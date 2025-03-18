@@ -9,7 +9,7 @@
 ### Core Functionality
 
 - **Input Collection**: Captures the number of group members and their keyword tags via command-line input.  
-- **Embedding Lookup**: Searches for each keyword in the pre-trained GloVe word embedding file (`glove.6B.50d.txt`) and retrieves the corresponding 50-dimensional vector if available.  
+- **Embedding Lookup**: Searches for each keyword in the pre-trained GloVe word embedding file (`glove.6B.300d.txt`) and retrieves the corresponding 50-dimensional vector if available.  
 - **Activity Matching**: Reads `activities.csv`, extracts predefined activity tags, retrieves their corresponding vectors from GloVe, and compares them with the input keyword vectors using cosine similarity.  
 - **Recommendation Output**: Identifies the top 3 activities with the highest similarity scores and recommends them for the group.  
 
@@ -18,5 +18,5 @@
 
 - 🔗[Click here](https://nlp.stanford.edu/data/glove.6B.zip)  to download the GloVe embeddings
 - Extract the ZIP file.  
-- Locate `glove.6B.50d.txt`.  
-- Move `glove.6B.50d.txt` to the `data` folder.  
+- Locate `glove.6B.300d.txt`.  
+- Move `glove.6B.300d.txt` to the `data` folder.  
