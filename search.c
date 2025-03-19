@@ -47,7 +47,7 @@ int main(){
     char buffer[100];
     char show[100];
 
-    FILE *embedding = fopen("./data/glove.6B.50d.txt","r");
+    FILE *embedding = fopen("./data/glove.6B.300d.txt","r");
     FILE *activity = fopen("./data/activities.csv","r");
 
     fgets(show, sizeof(show), activity); //To skip the header
@@ -62,16 +62,6 @@ int main(){
         printf("File doesn't exist or given path is incorrect.\n");
         exit(1);
     }
-
-    // while(1){
-    // printf("Enter a word or a sentence: ");
-    // fgets(buffer,100,stdin);
-
-    // // Remove the newline character that fgets might add
-    // buffer[strcspn(buffer, "\n")] = '\0';
-
-    // printf("You entered: %s\n",buffer);
-    // }   
 
     return 0;
 }
