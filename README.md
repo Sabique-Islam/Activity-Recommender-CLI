@@ -18,60 +18,21 @@ ARC uses **GloVe word embeddings** to analyze group preferences and recommend th
 
 ```mermaid
 graph TD
-    A[Start] --> B[Load Embeddings File]
-    B --> C{File Opened?}
-    C -- No --> D[Print Error and Exit]
-    C -- Yes --> E[Allocate Memory for Line Buffer]
-    E --> F{Memory Allocation Success?}
-    F -- No --> D
-    F -- Yes --> G[Read File Line by Line]
-    G --> H{End of File?}
-    H -- Yes --> I[Print Progress and Close File]
-    H -- No --> J[Parse Word and Vector]
-    J --> K{Valid Vector?}
-    K -- No --> G
-    K -- Yes --> L[Normalize Vector and Add to HashMap]
-    L --> G
-    I --> M[Load Activities File]
-    M --> N{File Opened?}
-    N -- No --> O[Print Error and Exit]
-    N -- Yes --> P[Allocate Memory for Activities]
-    P --> Q{Memory Allocation Success?}
-    Q -- No --> O
-    Q -- Yes --> R[Read File Line by Line]
-    R --> S{End of File?}
-    S -- Yes --> T[Close File]
-    S -- No --> U[Parse Activity and Tags]
-    U --> V[Check if Tags Exist in Embeddings]
-    V --> W{Valid Tag Found?}
-    W -- No --> X[Process Tags Individually]
-    W -- Yes --> Y[Add Vector to Activity]
-    X --> Z[Check if Compound Words]
-    Z --> AA[Split and Process Words]
-    AA --> Y
-    Y --> R
-    T --> AB[Calculate Activity Vectors]
-    AB --> AC[Initialize Average Vector]
-    AC --> AD[Process Each Tag]
-    AD --> AE{Valid Vector for Tag?}
-    AE -- No --> AF[Skip Tag]
-    AE -- Yes --> AG[Add Vector to Average]
-    AG --> AD
-    AF --> AH[Check for Multiple Words]
-    AH --> AI[Split and Process Words]
-    AI --> AG
-    AG --> AJ[Final Average Calculation]
-    AJ --> AB
-    AJ --> AK[Group Preferences]
-    AK --> AL[Ask Group Size]
-    AL --> AM[Process Preferences for Each Person]
-    AM --> AN[Process Each Word]
-    AN --> AO{Word in Embeddings?}
-    AO -- No --> AP[Skip Word]
-    AO -- Yes --> AQ[Add Word Vector to Group]
-    AQ --> AM
-    AP --> AN
-    AP --> AO
+    A[Start] --> B[Load GloVe Embeddings]
+    B -->|Store in HashMap| C[Load Activities from CSV]
+    C -->|Parse Tags| D[Calculate Activity Vectors]
+    D -->|Average Tag Embeddings| E[User Input: Group Size]
+    E --> F[Collect Preferences for Each Person]
+    F -->|Space-separated Keywords| G[Process Keywords]
+    G -->|Lowercase, Remove Punctuation| H[Find Embeddings for Keywords]
+    H -->|Handle Compound Words| I[Sum Valid Embeddings]
+    I -->|Average for Group Vector| J[Compare Group Vector with Activity Vectors]
+    J -->|Cosine Similarity| K[Select Top 3 Activities]
+    K --> L[Display Recommendations]
+    L --> M[Prompt: 'start' or 'quit']
+    M -->|start| E
+    M -->|quit| N[Cleanup and Exit]
+
 ```
 
 1. **Collect** keywords from each group member
