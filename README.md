@@ -18,10 +18,10 @@ ARC uses **GloVe word embeddings** to analyze group preferences and recommend th
 
 ```mermaid
 graph TD;
-    A[User Keywords] --> B[Vector Conversion using GloVe];
-    B --> C[Group Preference Vector];
-    C --> D[Cosine Similarity with Activities];
-    D --> E[Top 3 Activity Recommendations];
+    A[User Keywords from All Members] --> B[Vector Lookup from GloVe];
+    B --> C[Sum and Average to Form Group Vector];
+    C --> D[Compare with Activity Vectors using Cosine Similarity];
+    D --> E[Select Top 3 Activities with Highest Similarity];
 ```
 
 1. **Collect** keywords from each group member
