@@ -1,22 +1,66 @@
-# Activity Recommender CLI (ARC) 
-[Under development]
+# **Activity Recommender CLI (ARC)**
 
-## Project Overview
+**Activity Recommender CLI (ARC)** recommends group activities based on **user preferences**. Multiple users input **keywords** representing their interests, which are processed using **word embeddings** to suggest activities matching the group's preferences.
 
-**Activity Recommender CLI (ARC)** is a command-line interface (CLI) tool designed to recommend group activities based on collective user preferences. ARC allows multiple users to input keyword tags representing their interests, processes these inputs using word embeddings, and suggests a single activity aligned with the group’s shared preferences. The tool aims to facilitate group decision-making by providing a consensus-driven recommendation through a lightweight, terminal-based application.
+---
 
+![ARC](./demo/sample.png)
 
-### Core Functionality
+---
 
-- **Input Collection**: Captures the number of group members and their keyword tags via command-line input.  
-- **Embedding Lookup**: Searches for each keyword in the pre-trained GloVe word embedding file (`glove.6B.300d.txt`) and retrieves the corresponding 300-dimensional vector if available.  
-- **Activity Matching**: Reads `activities.csv`, extracts predefined activity tags, retrieves their corresponding vectors from GloVe, and compares them with the input keyword vectors using cosine similarity.  
-- **Recommendation Output**: Identifies the top 3 activities with the highest similarity scores and recommends them for the group.  
+## **Overview →**
 
+ARC uses **GloVe word embeddings** to analyze group preferences and recommend the most relevant activities. It's a **command-line program built in C**, perfect for quick interactions and lightweight environments.
 
-### Instructions for Downloading and Setting Up GloVe Embeddings 
+---
 
-- 🔗[Click here](https://nlp.stanford.edu/data/glove.6B.zip)  to download the GloVe embeddings
-- Extract the ZIP file.  
-- Locate `glove.6B.300d.txt`.  
-- Move `glove.6B.300d.txt` to the `data` folder.  
+## **How It Works →**
+
+```mermaid
+graph TD;
+    A[User Keywords] --> B[Vector Conversion using GloVe];
+    B --> C[Group Preference Vector];
+    C --> D[Cosine Similarity with Activities];
+    D --> E[Top 3 Activity Recommendations];
+```
+
+1. **Collect** keywords from each group member
+2. **Retrieve** vectors of the user input words from **GloVe embeddings**
+3. **Sum and average** to get a **group vector** representing overall preferences
+4. **Compare** the group vector with **each activity vector** from the CSV database using **cosine similarity**
+5. **Output** the **top 3 matching activities** with the **highest similarity scores**
+
+---
+
+## **Features →**
+
+| **Feature**                    | **Description**                                             |
+| ------------------------------ | ----------------------------------------------------------- |
+| **Multi-user input**           | Collects preferences from multiple group members            |
+| **Word embedding-based logic** | Uses semantic meaning for accurate activity recommendation|
+
+---
+
+## **Setup Guide →**
+
+### **Installation**
+
+```bash
+git clone https://github.com/Sabique-Islam/Activity-Recommender-CLI
+cd Activity-Recommender-CLI
+```
+
+### **Download Embeddings**
+
+* **[Click Here to Download GloVe Embeddings](https://nlp.stanford.edu/data/glove.6B.zip)**
+* **Extract** the zip
+* Move `glove.6B.300d.txt` into the `data/` directory
+
+### **Build & Run**
+
+```bash
+gcc -o arc search.c src/utils.c -lm
+./arc
+```
+
+---
