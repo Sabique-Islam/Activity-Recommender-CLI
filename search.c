@@ -140,22 +140,6 @@ void load_embeddings(HashMap* map, const char* filename) {
     fclose(file);
 }
 
-// Add this helper function to dump the first few entries in the hash map
-void dump_hashmap_sample(HashMap* map) {
-    printf("\nSample of words in the hash map:\n");
-    int count = 0;
-    
-    for (int i = 0; i < HASH_SIZE && count < 20; i++) {
-        Node* current = map->table[i];
-        while (current != NULL && count < 20) {
-            printf("Word: '%s'\n", current->data.word);
-            count++;
-            current = current->next;
-        }
-    }
-}
-
-// Helper function to preprocess tags
 void preprocess_tag(char* tag) {
     // Convert to lowercase
     lowercase_str(tag);
