@@ -69,9 +69,59 @@ cd Activity-Recommender-CLI
 
 ### **Build & Run**
 
+#### Using Make
+
 ```bash
-gcc -o arc search.c src/utils.c -lm
+make
 ./arc
 ```
+
+#### Manual Compilation
+
+```bash
+gcc -o arc search.c src/utils.c src/colors.c src/embeddings.c src/activities.c -lm
+./arc
+```
+
+### **Docker**
+
+#### Build Docker Image
+
+```bash
+docker build -t arc:latest .
+```
+
+#### Run Docker Container
+
+```bash
+docker run -it --name arc-container \
+  -v ./data:/app/data \
+  arc:latest
+```
+
+This mounts the local `data` folder to the container, which should contain the required files: `glove.6B.300d.txt` and `activities.csv`.
+
+#### Using Terminal Command Scripts
+
+The project includes ready-to-use scripts in the `Terminal-Commands` folder:
+
+```bash
+# Build and run with Make
+./Terminal-Commands/Make-Command.sh
+
+# Build and run with Docker (includes make compilation)
+./Terminal-Commands/Docker.sh
+
+# Delete Docker container
+./Terminal-Commands/Delete-Container.sh
+```
+
+Make sure to set execute permissions on the scripts:
+
+```bash
+chmod +x Terminal-Commands/*.sh
+```
+
+`Note:` Running Docker automatically compiles the code during image building, so no need to run Make separately before Docker.
 
 ---

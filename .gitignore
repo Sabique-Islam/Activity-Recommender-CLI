@@ -1,0 +1,14 @@
+.vscode
+.DS_Store
+search
+search.exe
+main.exe
+main
+data/glove.6B.300d.txt
+data/glove.6B.50d.txt
+data/find.py
+suggestions.md
+Todo.txt
+arc
+obj
+Issues.md

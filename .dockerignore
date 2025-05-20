@@ -1,0 +1,16 @@
+.git
+.gitignore
+
+obj/
+arc
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+data/*.txt
+data/*.csv
+
+.DS_Store
+*.log
