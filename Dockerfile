@@ -1,5 +1,4 @@
 FROM gcc:latest
-
 WORKDIR /app
 
 RUN apt-get update && \
