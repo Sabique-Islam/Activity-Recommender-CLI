@@ -1,7 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g -std=c99
 LDFLAGS = -lm
-
 SRC_DIR = src
 INCLUDE_DIR = include
 OBJ_DIR = obj
