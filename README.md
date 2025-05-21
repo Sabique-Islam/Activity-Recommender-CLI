@@ -125,3 +125,6 @@ chmod +x Terminal-Commands/*.sh
 `Note:` Running Docker automatically compiles the code during image building, so no need to run Make separately before Docker.
 
 ---
+
+# Resources →
+> [Makefile](https://makefiletutorial.com/)
