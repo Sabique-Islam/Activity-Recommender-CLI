@@ -3,17 +3,9 @@
 int main() {
     clear_screen();
     print_colored("Welcome to Activity Recommender CLI (ARC)\n", GREEN);
-    print_colored("Loading embeddings and activities...\n", YELLOW);
+    print_colored("Loading embeddings and activities ", YELLOW);
 
     const char* embedding_file = "./data/glove.6B.300d.txt";
-
-    FILE* test = fopen(embedding_file, "r");
-    if (!test) {
-        print_colored("Error: Could not open embeddings file\n", RED);
-        exit(1);
-    }
-    fclose(test);
-
     HashMap* embedding_map = create_hashmap();
 
     load_embeddings(embedding_map, embedding_file);
@@ -24,7 +16,6 @@ int main() {
 
     char command[10];
     do {
-
         print_colored("\nEnter 'start' to begin or 'quit' to exit: ", BLUE);
         scanf("%s", command);
         getchar();
@@ -32,9 +23,6 @@ int main() {
         lowercase_str(command);
         if (strcmp(command, "start") == 0) {
             process_group_preferences(embedding_map);
-        }
-        else if (strcmp(command, "quit") != 0) {
-            print_colored("Invalid command. Please try again.\n", RED);
         }
     } while (strcmp(command, "quit") != 0);
 

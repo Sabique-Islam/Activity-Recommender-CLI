@@ -25,7 +25,6 @@ WordEmbedding* find_embedding(HashMap* map, const char* word);
 void free_hashmap(HashMap* map);
 float cosine_similarity(float* vec1, float* vec2);
 void load_embeddings(HashMap* map, const char* filename);
-void dump_hashmap_sample(HashMap* map);
 void preprocess_tag(char* tag);
 
 #endif

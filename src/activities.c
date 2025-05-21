@@ -8,43 +8,21 @@ int activities_capacity = 0;
 
 void load_activities(const char* filename) {
     FILE* file = fopen(filename, "r");
-    if (!file) {
-        print_colored("Error: Could not open activities file\n", RED);
-        exit(1);
-    }
-
     activities_capacity = INITIAL_CAPACITY;
     activities = malloc(activities_capacity * sizeof(Activity));
-
-    if (!activities) {
-        print_colored("Error: Memory allocation failed\n", RED);
-        fclose(file);
-        exit(1);
-    }
     activity_count = 0;
 
     char line[MAX_LINE_LEN];
-
     fgets(line, sizeof(line), file);
 
     while (fgets(line, sizeof(line), file)) {
-
         if (activity_count >= activities_capacity) {
             activities_capacity *= GROWTH_FACTOR;
             Activity* temp = realloc(activities, activities_capacity * sizeof(Activity));
-
-            if (!temp) {
-                print_colored("Error: Memory reallocation failed\n", RED);
-                free(activities);
-                fclose(file);
-                exit(1);
-            }
             activities = temp;
         }
 
         char* token = strtok(line, ",");
-        if (!token) continue;
-
         strncpy(activities[activity_count].name, token, MAX_WORD_LEN - 1);
         activities[activity_count].name[MAX_WORD_LEN - 1] = '\0';
         activities[activity_count].tag_count = 0;
@@ -65,7 +43,6 @@ void load_activities(const char* filename) {
 
     if (activity_count < activities_capacity) {
         Activity* temp = realloc(activities, activity_count * sizeof(Activity));
-
         if (temp) {
             activities = temp;
             activities_capacity = activity_count;
@@ -84,20 +61,10 @@ void calculate_activity_vectors(HashMap* map) {
         for (int j = 0; j < activities[i].tag_count; j++) {
             WordEmbedding* embedding = find_embedding(map, activities[i].tags[j]);
             if (embedding) {
-                int valid_vector = 1;
                 for (int k = 0; k < EMBEDDING_DIM; k++) {
-                    if (isnan(embedding->vector[k]) || isinf(embedding->vector[k])) {
-                        valid_vector = 0;
-                        break;
-                    }
+                    activities[i].avg_vector[k] += embedding->vector[k];
                 }
-
-                if (valid_vector) {
-                    for (int k = 0; k < EMBEDDING_DIM; k++) {
-                        activities[i].avg_vector[k] += embedding->vector[k];
-                    }
-                    valid_tags++;
-                }
+                valid_tags++;
             } else {
                 char tag_copy[MAX_WORD_LEN];
                 strncpy(tag_copy, activities[i].tags[j], MAX_WORD_LEN - 1);
@@ -118,7 +85,6 @@ void calculate_activity_vectors(HashMap* map) {
                 while (word) {
                     if (strlen(word) > 0) {
                         WordEmbedding* sub_embedding = find_embedding(map, word);
-
                         if (sub_embedding) {
                             for (int k = 0; k < EMBEDDING_DIM; k++) {
                                 temp_vector[k] += sub_embedding->vector[k];
@@ -174,54 +140,51 @@ void process_group_preferences(HashMap* map) {
 
         char* word = strtok(preferences, " ");
         while (word) {
-            if (strlen(word) > 0) {
-                if (!is_stopword(word)) {
-                    WordEmbedding* embedding = find_embedding(map, word);
-                    if (embedding) {
-                        for (int j = 0; j < EMBEDDING_DIM; j++) {
-                            group_vector[j] += embedding->vector[j];
+            if (strlen(word) > 0 && !is_stopword(word)) {
+                WordEmbedding* embedding = find_embedding(map, word);
+                if (embedding) {
+                    for (int j = 0; j < EMBEDDING_DIM; j++) {
+                        group_vector[j] += embedding->vector[j];
+                    }
+                    total_valid_words++;
+                } else {
+                    char word_copy[MAX_WORD_LEN];
+                    strncpy(word_copy, word, MAX_WORD_LEN - 1);
+                    word_copy[MAX_WORD_LEN - 1] = '\0';
+
+                    int has_hyphen = 0;
+                    for (int k = 0; word_copy[k]; k++) {
+                        if (word_copy[k] == '-') {
+                            word_copy[k] = ' ';
+                            has_hyphen = 1;
                         }
-                        total_valid_words++;
-                    } else {
-                        char word_copy[MAX_WORD_LEN];
-                        strncpy(word_copy, word, MAX_WORD_LEN - 1);
-                        word_copy[MAX_WORD_LEN - 1] = '\0';
+                    }
 
-                        int has_hyphen = 0;
-                        for (int k = 0; word_copy[k]; k++) {
-                            if (word_copy[k] == '-') {
-                                word_copy[k] = ' ';
-                                has_hyphen = 1;
-                            }
-                        }
+                    if (has_hyphen) {
+                        char* subword;
+                        int subword_count = 0;
+                        float temp_vector[EMBEDDING_DIM] = {0};
 
-                        if (has_hyphen) {
-                            char* subword;
-                            int subword_count = 0;
-                            float temp_vector[EMBEDDING_DIM] = {0};
-
-                            subword = strtok(word_copy, " ");
-                            while (subword) {
-                                if (strlen(subword) > 0 && !is_stopword(subword)) {
-                                
-                                    WordEmbedding* sub_embedding = find_embedding(map, subword);
-                                    if (sub_embedding) {
-                                        for (int j = 0; j < EMBEDDING_DIM; j++) {
-                                            temp_vector[j] += sub_embedding->vector[j];
-                                        }
-                                        subword_count++;
+                        subword = strtok(word_copy, " ");
+                        while (subword) {
+                            if (strlen(subword) > 0 && !is_stopword(subword)) {
+                                WordEmbedding* sub_embedding = find_embedding(map, subword);
+                                if (sub_embedding) {
+                                    for (int j = 0; j < EMBEDDING_DIM; j++) {
+                                        temp_vector[j] += sub_embedding->vector[j];
                                     }
+                                    subword_count++;
                                 }
-                                subword = strtok(NULL, " ");
                             }
+                            subword = strtok(NULL, " ");
+                        }
 
-                            if (subword_count > 0) {
-                                for (int j = 0; j < EMBEDDING_DIM; j++) {
-                                    temp_vector[j] /= subword_count;
-                                    group_vector[j] += temp_vector[j];
-                                }
-                                total_valid_words++;
+                        if (subword_count > 0) {
+                            for (int j = 0; j < EMBEDDING_DIM; j++) {
+                                temp_vector[j] /= subword_count;
+                                group_vector[j] += temp_vector[j];
                             }
+                            total_valid_words++;
                         }
                     }
                 }
@@ -244,7 +207,6 @@ void process_group_preferences(HashMap* map) {
 
         for (int i = 0; i < activity_count; i++) {
             float sim = cosine_similarity(group_vector, activities[i].avg_vector);
-
             for (int j = 0; j < 3; j++) {
                 if (sim > top3[j].similarity) {
                     for (int k = 2; k > j; k--) {
