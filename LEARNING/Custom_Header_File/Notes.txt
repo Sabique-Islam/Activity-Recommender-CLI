@@ -1,1 +1,0 @@
-Every .c file must be compiled.
