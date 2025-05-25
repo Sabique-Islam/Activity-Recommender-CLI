@@ -101,25 +101,23 @@ docker run -it --name arc-container \
 
 This mounts the local `data` folder to the container, which should contain the required files: `glove.6B.300d.txt` and `activities.csv`.
 
-#### Using Terminal Command Scripts
-
-The project includes ready-to-use scripts in the `Terminal-Commands` folder:
+#### Using Shell Scripts →
 
 ```bash
 # Build and run with Make
-./Terminal-Commands/Make-Command.sh
+./Shell-Scripts/Make-Command.sh
 
 # Build and run with Docker (includes make compilation)
-./Terminal-Commands/Docker.sh
+./Shell-Scripts/Docker.sh
 
 # Delete Docker container
-./Terminal-Commands/Delete-Container.sh
+./Shell-Scripts/Delete-Container.sh
 ```
 
 Make sure to set execute permissions on the scripts:
 
 ```bash
-chmod +x Terminal-Commands/*.sh
+chmod +x Shell-Scripts/*.sh
 ```
 
 `Note:` Running Docker automatically compiles the code during image building, so no need to run Make separately before Docker.
