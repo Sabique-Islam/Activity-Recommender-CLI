@@ -8,12 +8,6 @@
 
 ---
 
-## **Overview →**
-
-ARC uses **GloVe word embeddings** to analyze group preferences and recommend the most relevant activities. It's a **command-line program built in C**, perfect for quick interactions and lightweight environments.
-
----
-
 ## **How It Works →**
 
 ```mermaid
@@ -34,21 +28,6 @@ graph TD
     M -->|quit| N[Cleanup and Exit]
 
 ```
-
-1. **Collect** keywords from each group member
-2. **Retrieve** vectors of the user input words from **GloVe embeddings**
-3. **Sum and average** to get a **group vector** representing overall preferences
-4. **Compare** the group vector with **each activity vector** from the CSV database using **cosine similarity**
-5. **Output** the **top 3 matching activities** with the **highest similarity scores**
-
----
-
-## **Features →**
-
-| **Feature**                    | **Description**                                             |
-| ------------------------------ | ----------------------------------------------------------- |
-| **Multi-user input**           | Collects preferences from multiple group members            |
-| **Word embedding-based logic** | Uses semantic meaning for accurate activity recommendation|
 
 ---
 
