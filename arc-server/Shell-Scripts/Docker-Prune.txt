@@ -1,0 +1,2 @@
+docker system prune -af
+docker rmi arc-server

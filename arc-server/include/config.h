@@ -1,0 +1,10 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define SERVER_PORT 6969
+#define MAX_REQUEST_SIZE 8192
+#define MAX_RESPONSE_SIZE 16384
+#define MAX_GROUP_SIZE 10
+#define MAX_PREFERENCES_PER_USER 20
+
+#endif

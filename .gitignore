@@ -12,3 +12,7 @@ Todo.txt
 arc
 obj
 Issues.md
+Folder Structure.txt
+.gitignore
+
+arc-server/data/glove.6B.300d.txt
